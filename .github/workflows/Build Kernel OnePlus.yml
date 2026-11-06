@@ -1091,6 +1091,12 @@ jobs:
             set_config "CONFIG_KPM=n"
           fi
 
+          # KPM(kpatch) 需要关闭 CFI 和 SCS
+          if [ "${{ github.event.inputs.KPM }}" = "KPM" ]; then
+            scripts/config --file out/.config -d CFI_CLANG
+            scripts/config --file out/.config -d SHADOW_CALL_STACK
+          fi
+
           # SUSFS配置
           if [ "${{ github.event.inputs.SUSFS_META }}" != "-1" ]; then
             set_config "CONFIG_KSU_SUSFS=y"

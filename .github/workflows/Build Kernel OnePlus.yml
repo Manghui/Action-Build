@@ -1031,7 +1031,9 @@ jobs:
         run: |
           cd kernel_workspace/kernel_platform/common
           # [patch] KSU non-SUSFS sulog: user_arg_ptr* vs user_arg_ptr
-          sed -i 's/#define USER_ARG_NULL user_arg_null_ptr()/#define USER_ARG_NULL (*user_arg_null_ptr())/' drivers/kernelsu/sulog/event.c 2>/dev/null || true
+          if [ "${{ github.event.inputs.SUSFS_META }}" = "-1" ]; then
+            sed -i 's/#define USER_ARG_NULL user_arg_null_ptr()/#define USER_ARG_NULL (*user_arg_null_ptr())/' drivers/kernelsu/sulog/event.c 2>/dev/null || true
+          fi
           CONFIG_FILE=./arch/arm64/configs/gki_defconfig
           MAKEFILE=./kernel/Makefile
 

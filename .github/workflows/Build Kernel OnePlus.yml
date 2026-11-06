@@ -1459,10 +1459,6 @@ jobs:
             scripts/config --file out/.config -d LTO_CLANG_FULL
           fi
 
-          if [ "${{ github.event.inputs.KPM }}" != "KPN" ]; then
-            scripts/config --file out/.config -d CFI_CLANG
-            scripts/config --file out/.config -d SHADOW_CALL_STACK
-          fi
           scripts/config --file out/.config -d LOCALVERSION_AUTO
           make O=out "${MAKE_ARGS[@]}" olddefconfig --no-print-directory
           make -j"$(nproc --all)" O=out "${MAKE_ARGS[@]}"

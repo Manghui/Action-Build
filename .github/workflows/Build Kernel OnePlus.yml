@@ -1640,7 +1640,7 @@ jobs:
           path: ZRAM-Module/*
 
       - name: Check Cache Size Before Save
-        if: ${{ github.event.inputs.BUILD_NOCACHE == 'false' }}
+        if: ${{ always() && github.event.inputs.BUILD_NOCACHE == 'false' }}
         id: cache_size_check
         run: |
           check_size() {
@@ -1663,7 +1663,7 @@ jobs:
           check_size "${{ github.workspace }}/kernel_workspace/.thinlto-cache" "thinlto"
 
       - name: Save Ccache
-        if: ${{ github.event.inputs.BUILD_NOCACHE == 'false' && steps.cache_size_check.outputs.ccache_save == 'true' }}
+        if: ${{ always() && github.event.inputs.BUILD_NOCACHE == 'false' && steps.cache_size_check.outputs.ccache_save == 'true' }}
         uses: actions/cache/save@v5
         with:
           path: ${{ env.CCACHE_DIR }}
@@ -1672,7 +1672,7 @@ jobs:
             ccache-${{ runner.os }}-${{ github.ref_name }}-${{ github.event.inputs.FILE }}-${{ env.BUILD_METHOD }}-${{ github.event.inputs.FAST_BUILD == 'true' && 'alpha' || 'beta' }}-17.0-
 
       - name: Save ThinLTO Cache
-        if: ${{ github.event.inputs.BUILD_NOCACHE == 'false' && github.event.inputs.FAST_BUILD == 'true' && steps.cache_size_check.outputs.thinlto_save == 'true' }}
+        if: ${{ always() && github.event.inputs.BUILD_NOCACHE == 'false' && github.event.inputs.FAST_BUILD == 'true' && steps.cache_size_check.outputs.thinlto_save == 'true' }}
         uses: actions/cache/save@v5
         with:
           path: ${{ github.workspace }}/kernel_workspace/.thinlto-cache

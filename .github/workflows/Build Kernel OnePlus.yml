@@ -1230,6 +1230,7 @@ jobs:
             echo "Using UTC time as fallback: $DATESTR"
           fi
           echo "KBUILD_BUILD_TIMESTAMP=${DATESTR}" >> "$GITHUB_ENV"
+          echo "LOCALVERSION=-android14-11-o-gac2e718ebee6" >> "$GITHUB_ENV"
           echo "KBUILD_BUILD_VERSION=1" >> "$GITHUB_ENV"
           cd kernel_workspace/kernel_platform/
           for f in ./common/scripts/mkcompile_h ./"$KERNEL_REPOS"/scripts/mkcompile_h; do
@@ -1458,6 +1459,7 @@ jobs:
             scripts/config --file out/.config -d LTO_CLANG_FULL
           fi
 
+          scripts/config --file out/.config -d LOCALVERSION_AUTO
           make O=out "${MAKE_ARGS[@]}" olddefconfig --no-print-directory
           make -j"$(nproc --all)" O=out "${MAKE_ARGS[@]}"
           ccache -s

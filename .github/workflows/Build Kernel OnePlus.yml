@@ -1032,6 +1032,7 @@ jobs:
           cd kernel_workspace/kernel_platform/common
           # [patch] KSU non-SUSFS sulog: user_arg_ptr* vs user_arg_ptr
           # [patch] auto-enable selinux_hide at post-fs-data (no boot cmdline)
+          sed -i '/bool ksu_selinux_hide_running __read_mostly = false;/a static int ksu_selinux_hide_enable(void);' drivers/kernelsu/feature/selinux_hide.c 2>/dev/null || true
           sed -i '/fake status is not initialized after post-fs-data/a\    if (!ksu_selinux_hide_running) { ksu_selinux_hide_enabled = true; if (!ksu_selinux_hide_enable()) ksu_selinux_hide_running = true; }' drivers/kernelsu/feature/selinux_hide.c 2>/dev/null || true
           if [ "${{ github.event.inputs.SUSFS_META }}" = "-1" ]; then
             sed -i 's/#define USER_ARG_NULL user_arg_null_ptr()/#define USER_ARG_NULL (*user_arg_null_ptr())/' drivers/kernelsu/sulog/event.c 2>/dev/null || true
